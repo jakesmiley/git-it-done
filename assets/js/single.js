@@ -2,14 +2,18 @@ var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
 var repoNameEl = document.querySelector("#repo-name");
 
-var getRepoName = function() { // removed repoName
+var getRepoName = function() {
+    //get repo name from url query string
     var queryString = document.location.search;
-    console.log("QUERY STRING: " + queryString)
     var repoName = queryString.split("=")[1];
-    console.log("REPO NAME: " + repoName)
-    getRepoIssues(repoName);
-    repoNameEl.textContent = repoName;
-}
+
+    if(repoName) {
+        getRepoIssues(repoName);
+        repoNameEl.textContent = repoName;
+    } else {
+        document.location.replace("./index.html")
+    }
+};
 
 var displayWarning = function(repo) {
     //add text to warning container
@@ -29,6 +33,7 @@ var getRepoIssues = function(repo) {
 
     console.log(apiUrl);
     
+    //make request to url
     fetch(apiUrl).then(function(response) {
         //if request was successful
         if (response.ok) {
@@ -38,11 +43,11 @@ var getRepoIssues = function(repo) {
 
                 //check if api has paginated issues
                 if (response.headers.get("Link")) {
-                    console.log("repo has more than 30 issues");
+                    displayWarning(repo);
                 }
             });
         } else {
-            alert("'Twas a problem with thine request!");
+            document.location.replace("./index.html");
         }
     });
 };
