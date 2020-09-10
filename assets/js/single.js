@@ -54,7 +54,7 @@ var getRepoIssues = function(repo) {
 
 var displayIssues = function(issues) {
     if (issues.length === 0) {
-        issueContainerEl.textContent = "This repo has no open issues!";
+        issueContainerEl.textContent = "This repo has a noticable lack of open issues!";
         return;
     }
 
